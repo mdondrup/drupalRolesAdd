@@ -50,7 +50,8 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
    */
   private $query;
 
-
+  
+  private $userAttribute;
 
   /**
    * Initialize this filter.
@@ -63,7 +64,7 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
 
     assert('is_array($config)');
 
-    foreach (array('dsn', 'username', 'password', 'query') as $param) {
+    foreach (array('dsn', 'username', 'password', 'attribute') as $param) {
       if (!array_key_exists($param, $config)) {
 	throw new Exception('Missing required attribute \'' . $param .
 			    '\' for authentication source ' . $this->authId);
@@ -80,8 +81,8 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
     $this->dsn = $config['dsn'];
     $this->username = $config['username'];
     $this->password = $config['password'];
-    $this->query = $config['query'];
-		
+    //    $this->query = $config['query'];
+    $this->userAttribute = $config['attribute']; 		
   }
 
 
@@ -185,12 +186,12 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
 
     $attributes =& $request['Attributes'];
    
-    if (!array_key_exists('eduPersonPrincipalName', $attributes)) {
+    if (!array_key_exists($this->userAttribute, $attributes)) {
           throw new Exception('Missing required attribute');
     }
 
 
-    $userid = $attributes['eduPersonPrincipalName'];
+    $userid = $attributes[$this->userAttribute];
 
     $values = $this->getRolesForUser($userid);
     
