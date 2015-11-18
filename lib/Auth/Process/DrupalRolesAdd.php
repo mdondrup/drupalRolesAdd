@@ -187,7 +187,7 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
     $attributes =& $request['Attributes'];
    
     if (!array_key_exists($this->userAttribute, $attributes)) {
-          throw new Exception('Missing required attribute');
+          throw new Exception('Missing required attribute ' . $this->userAttribute);
     }
 
 
