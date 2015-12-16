@@ -126,8 +126,8 @@ class sspmod_drupalRolesAdd_Auth_Process_DrupalRolesAdd extends SimpleSAML_Auth_
 	$db = $this->connect();
 
 	$query = "SELECT role.name FROM public.role 
-        LEFT JOIN public.users_roles USING (rid) LEFT JOIN public.users USING (uid) 
-        WHERE users.init = :userid ";
+        LEFT JOIN public.users_roles USING (rid) LEFT JOIN public.authmap USING (uid) 
+        WHERE authmap.authname = :userid ";
 
 	try {
 	  $sth = $db->prepare($query);
